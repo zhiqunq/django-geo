@@ -1,0 +1,23 @@
+{% extends "geo_templates/widget_page.html" %}
+
+{% block title %}Google Map Widget{% endblock %}
+
+{% block extrahead %}
+	{{ widget.head_tags|safe }}
+	<script type="text/javascript">
+		var original_attrs = {
+			'latitude': {{ widget.latitude }},
+			'longitude': {{ widget.longitude }}
+		}
+		// Initialize the map widget onto the canvas
+		function initialize() {
+		    var map = new google.maps.Map2(document.getElementById("widget"));
+		    map.setCenter(new google.maps.LatLng({{ widget.center_latitude }}, {{ widget.center_longitude }}), 1);
+		  }
+		  google.setOnLoadCallback(initialize);
+	</script>
+{% endblock %}
+
+{% block content %}
+		<p>You must have JavaScript enabled to view the map widget.</p>
+{% endblock %}
