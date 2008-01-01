@@ -112,7 +112,11 @@ class Location(models.Model):
 		"""A two-tuple of latitude and longitude."""
 		return (self.latitude, self.longitude)
 	
-	def __str__(self):
+	def __getitem__(self, index):
+		"""Gets either a latitude or longitude by indexing the coords_tuple."""
+		return self.coords_tuple[index]
+	
+	def __unicode__(self):
 		return self.name
 	
 	def save(self):
@@ -121,7 +125,7 @@ class Location(models.Model):
 		if not self.geocoder:
 			self.geocoder = getattr(geopy_geocoders, settings.DEFAULT_GEOCODER)
 		self.refresh_if_needed(save=False)
-		super(Location, self).save()
+		return super(Location, self).save()
 	
 	def refresh(self, save=True):
 		"""Refreshes the geo-mapping."""
@@ -157,10 +161,9 @@ class Location(models.Model):
 		return False
 	
 	def distance_between(self, other_location, units='miles'):
-		"""Calculates the distance between this Location object and another Location object.
-		   units should be a string containing the unit of measurement (default: miles) you
-		   would like the result returned in (kilometers, miles, feet or nautical)."""
-		
+		"""Calculates the distance between this Location object and another Location or Point object.
+		   units should be a string containing the unit of measurement (default: miles) you would like
+		   the result returned in (kilometers, miles, feet or nautical)."""
 		if self.coords_tuple == other_location.coords_tuple:
 			return 0
 		dist_obj = geopy_distance.distance(self.coords_tuple, other_location.coords_tuple)
@@ -170,7 +173,65 @@ class Location(models.Model):
 		"""Given 2x two-tuples containing lat/long pairs (the northwest and southeast corners
 		   bounding a segment of the earth), returns Boolean as to whether this Location falls
 		   inside the area."""
-		if (north_west[0] < self.latitude < south_east[0]) and (north_west[1] < self.longitude < south_east[1]):
+		if (north_west[0] > self.latitude > south_east[0]) and (north_west[1] < self.longitude < south_east[1]):
+			return True
+		else:
+			return False
+
+class Point(models.Model):
+	"""Defines an arbitrary point, this is not bound to any location, and can be located anywhere
+	   on the globe."""
+	friendly_name = models.CharField(max_length=250, blank=True, null=True, help_text='Use this to assign a friendly display-name to this location like \'Home\'.')
+	latitude = models.FloatField(blank=True, null=False)
+	longitude = models.FloatField(blank=True, null=False)
+	created = models.DateTimeField(editable=False, blank=True, null=True)
+	is_public = models.BooleanField(default=True)
+	
+	def save(self):
+		if not self.created:
+			self.created = datetime.datetime.now()
+		return super(Point, self).save()
+	
+	@property
+	def name(self):
+		"""Returns either the friendly name, or if that isn't defined, a string which reads like
+		   'Point at (y, x) - where y and x are the latitude / longitude co-ordinates."""
+		return self.friendly_name or 'Point at (%s, %s)' % (self.latitude, self.longitude)
+	
+	def __unicode__(self):
+		return self.name
+	
+	@property
+	def coords(self):
+		"""A dictionary of latitude and longitude."""
+		return {
+				'latitude': self.latitude,
+				'longitude': self.longitude,
+			}
+	
+	@property
+	def coords_tuple(self):
+		"""A two-tuple of latitude and longitude."""
+		return (self.latitude, self.longitude)
+	
+	def __getitem__(self, index):
+		"""Gets either a latitude or longitude by indexing the coords_tuple."""
+		return self.coords_tuple[index]
+	
+	def distance_between(self, other_point, units='miles'):
+		"""Calculates the distance between this Location object and another Point or Location object.
+		   units should be a string containing the unit of measurement (default: miles) you would like
+		   the result returned in (kilometers, miles, feet or nautical)."""
+		if self.coords_tuple == other_location.coords_tuple:
+			return 0
+		dist_obj = geopy_distance.distance(self.coords_tuple, other_location.coords_tuple)
+		return getattr(dist_obj, str(units))
+	
+	def within_bounds(self, north_west, south_east):
+		"""Given 2x two-tuples containing lat/long pairs (the northwest and southeast corners
+		   bounding a segment of the earth), returns a Boolean as to whether this Point falls
+		   inside the area."""
+		if (north_west[0] > self.latitude > south_east[0]) and (north_west[1] < self.longitude < south_east[1]):
 			return True
 		else:
 			return False
