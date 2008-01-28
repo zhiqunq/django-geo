@@ -1,5 +1,5 @@
 #summary A list of features which are planned for inclusion in a future release.
-#labels Phase-Requirements
+#labels Phase-Requirements,Featured
 
 = Introduction =
 
