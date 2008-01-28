@@ -5,7 +5,7 @@
 
 This document lists all major features that are planned for inclusion in a future release of django-geo. The features listed here may have already been included in an SVN revision -- if this is the case this will always be indicated.
 
-= Details =
+= The List =
 
   * *`GeoField` model field* -- this will facilitate easy geotagging of any item, much in the way that [http://django-tagging.googlecode.com/ django-tagging] does with its `TagField`
   * *Easy retrieval of geotagged items* -- this should have been included from the very beginning, but the code originated from a project where this functionality was not needed and subsequently left-out due to time constraints. This will be implemented with _top priority_ and is being presently being worked on (this will work using [http://www.djangoproject.com/documentation/contenttypes/ Django's contenttypes framework])
