@@ -14,4 +14,4 @@ This document lists all major features that are planned for inclusion in a futur
 
 = Suggestions =
 
-This list is by no means complete, and there are many smaller improvements that are planned for future release, which will be added to the list progressively. If you have a suggestion for a feature, please don't hesitate to [mailto:oliver@obeattie.com send me an email] and if I feel that it's worthwhile, I'll add it to this list.
+This list is by no means complete, and there are many smaller improvements that are planned for future release, which will be added to the list progressively. If you have a suggestion for a feature, please do submit a ticket for `Type-Enhancement` and I'll certainly consider it for inclusion.
