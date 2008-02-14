@@ -8,7 +8,7 @@ This document lists all major features that are planned for inclusion in a futur
 = The List =
 
   * *`GeoField` model field* -- this will facilitate easy geotagging of any item, much in the way that [http://django-tagging.googlecode.com/ django-tagging] does with its `TagField`
-  * *Easy retrieval of geotagged items* -- this should have been included from the very beginning, but the code originated from a project where this functionality was not needed and subsequently left-out due to time constraints. This will be implemented with _top priority_ and is being presently being worked on (this will work using [http://www.djangoproject.com/documentation/contenttypes/ Django's contenttypes framework])
+  * *Easy retrieval of geotagged items* -- this should have been included from the very beginning, but the code originated from a project where this functionality was not needed and subsequently left-out due to time constraints. This will be implemented with _top priority_ and is currently in development (this will work using [http://www.djangoproject.com/documentation/contenttypes/ Django's contenttypes framework])
   * *Display of Locations on maps* -- to make the job of displaying the data on the front-end easier, Location objects should be allowed to be easily displayed on a variety of different map types (Google Maps, Yahoo! Maps, etc.)
   * *More unit tests* -- the current user tests are somewhat restricted. These will be expanded in time. 
 
